@@ -51,23 +51,38 @@ interface IShowProps {
   };
 }
 
-interface IApiProps {
+interface IPersonProps {
+  id: number;
+  name: string;
+  birthday: string;
+  country: string;
+  deathday: string;
+  gender: string;
+  image: string;
+  updated: number;
+  url: string;
+}
+
+interface IAll {
   score: number;
-  show: IShowProps;
+  show?: IShowProps;
+  person?: IPersonProps;
 }
 
 const Home = () => {
   const [input, setInput] = useState<string>("");
-  const [results, setResults] = useState<IApiProps[]>([]);
+  const [results, setResults] = useState<IAll[]>([]);
+  const [searchOption, setSearchOption] = useState("shows");
+  console.log(results);
+  const isShowsSearch = searchOption === "shows";
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setInput(event.target.value);
 
   const onSearch = () => {
-    apiGet(`/search/shows?q=${input}`).then((newResult) =>
-      setResults(newResult)
+    apiGet(`/search/${searchOption}?q=${input}`).then((result) =>
+      setResults(result)
     );
-
     setInput("");
   };
 
@@ -77,22 +92,68 @@ const Home = () => {
     }
   };
 
+  const onRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchOption(event.target.value);
+  };
+
+  const renderResults = () => {
+    if (results.length === 0) {
+      return <div>Sorry, no response!!!</div>;
+    }
+
+    if (results.length > 0) {
+      return results[0].show
+        ? results.map((item) => (
+            <div key={item.show?.id}>{item.show?.name}</div>
+          ))
+        : results.map((item) => {
+            console.log(item.person);
+            return <div key={item.person?.id}>{item.person?.name}</div>;
+          });
+    }
+
+    return null;
+  };
+
   return (
     <MainPageLayout>
       <input
         type="text"
+        placeholder="Search for something..."
         value={input}
-        onChange={handleOnChange}
+        onChange={onInputChange}
         onKeyDown={onKeyDown}
       />
+
+      <div>
+        <label htmlFor="shows-search">
+          Shows
+          <input
+            id="shows-search"
+            type="radio"
+            value="shows"
+            checked={isShowsSearch}
+            onChange={onRadioChange}
+          />
+        </label>
+
+        <label htmlFor="actors-search">
+          Actors
+          <input
+            id="actors-search"
+            type="radio"
+            value="people"
+            checked={!isShowsSearch}
+            onChange={onRadioChange}
+          />
+        </label>
+      </div>
+
       <button type="button" onClick={onSearch}>
         Search...
       </button>
-      {results.length === 0 && <div>Sorry, no response!!!</div>}
-      <div>
-        {results.length > 0 &&
-          results.map((item) => <div key={item.show.id}>{item.show.name}</div>)}
-      </div>
+
+      {renderResults()}
     </MainPageLayout>
   );
 };
