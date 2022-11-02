@@ -1,5 +1,7 @@
 import { useState } from "react";
+import ActorGrid from "../components/actor/ActorGrid";
 import MainPageLayout from "../components/MainPageLayout";
+import ShowGrid from "../components/show/ShowGrid";
 import { apiGet } from "../misc/config";
 
 interface IShowProps {
@@ -63,26 +65,28 @@ interface IPersonProps {
   url: string;
 }
 
-interface IAll {
+export interface IShow {
   score: number;
-  show?: IShowProps;
-  person?: IPersonProps;
+  show: IShowProps;
+}
+export interface IPerson {
+  score: number;
+  person: IPersonProps;
 }
 
 const Home = () => {
   const [input, setInput] = useState<string>("");
-  const [results, setResults] = useState<IAll[]>([]);
+  const [results, setResults] = useState<IShow[] | IPerson[]>([]);
   const [searchOption, setSearchOption] = useState("shows");
-  console.log(results);
   const isShowsSearch = searchOption === "shows";
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setInput(event.target.value);
 
   const onSearch = () => {
-    apiGet(`/search/${searchOption}?q=${input}`).then((result) =>
-      setResults(result)
-    );
+    apiGet(`/search/${searchOption}?q=${input}`).then((result) => {
+      setResults(result);
+    });
     setInput("");
   };
 
@@ -94,25 +98,6 @@ const Home = () => {
 
   const onRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchOption(event.target.value);
-  };
-
-  const renderResults = () => {
-    if (results.length === 0) {
-      return <div>Sorry, no response!!!</div>;
-    }
-
-    if (results.length > 0) {
-      return results[0].show
-        ? results.map((item) => (
-            <div key={item.show?.id}>{item.show?.name}</div>
-          ))
-        : results.map((item) => {
-            console.log(item.person);
-            return <div key={item.person?.id}>{item.person?.name}</div>;
-          });
-    }
-
-    return null;
   };
 
   return (
@@ -153,7 +138,16 @@ const Home = () => {
         Search...
       </button>
 
-      {renderResults()}
+      {results.length === 0 && <div>Sorry, no response!!!</div>}
+
+      {results.length > 0 ? (
+        isShowsSearch ? (
+          <ShowGrid data={results as IShow[]} />
+        ) : (
+          <ActorGrid data={results as IPerson[]} />
+        )
+      ) : null}
+
     </MainPageLayout>
   );
 };
