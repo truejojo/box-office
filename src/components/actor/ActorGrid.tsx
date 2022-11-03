@@ -1,13 +1,14 @@
 import { IPerson } from "../../pages/Home";
 import ActorCard from "./ActorCard";
 
+import { FlexGrid } from "../styled";
 interface IActorGridProps {
   data: IPerson[];
 }
 
 const ActorGrid = ({ data }: IActorGridProps) => {
   return (
-    <div>
+    <FlexGrid>
       {data.map(({ person }) => (
         <ActorCard
           key={person.id}
@@ -20,7 +21,7 @@ const ActorGrid = ({ data }: IActorGridProps) => {
         />
       ))}
       ;
-    </div>
+    </FlexGrid>
   );
 };
 
