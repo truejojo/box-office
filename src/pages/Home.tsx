@@ -17,8 +17,13 @@ interface IShowProps {
   premiered: string;
   ended: string;
   officialSite: string;
-  schedule: { time: string; days: string[] };
-  rating: { average: number };
+  schedule: {
+    time: string;
+    days: string[];
+  };
+  rating: {
+    average: number;
+  };
   weight: number;
   network: {
     id: number;
@@ -55,14 +60,26 @@ interface IShowProps {
 
 interface IPersonProps {
   id: number;
+  url: string;
   name: string;
+  country: {
+    name: string;
+    code: string;
+    timezone: string;
+  };
   birthday: string;
-  country: string;
   deathday: string;
   gender: string;
-  image: string;
+  image: {
+    medium: string;
+    original: string;
+  };
   updated: number;
-  url: string;
+  _links: {
+    self: {
+      href: string;
+    };
+  };
 }
 
 export interface IShow {
@@ -140,14 +157,13 @@ const Home = () => {
 
       {results.length === 0 && <div>Sorry, no response!!!</div>}
 
-      {results.length > 0 ? (
-        isShowsSearch ? (
-          <ShowGrid data={results as IShow[]} />
-        ) : (
-          <ActorGrid data={results as IPerson[]} />
-        )
-      ) : null}
+      {results.length > 0 && isShowsSearch && (
+        <ShowGrid data={results as IShow[]} />
+      )}
 
+      {results.length > 0 && !isShowsSearch && (
+        <ActorGrid data={results as IPerson[]} />
+      )}
     </MainPageLayout>
   );
 };

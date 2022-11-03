@@ -18,13 +18,6 @@ const ShowGrid = ({ data }: IShowGridProps) => {
           image={show.image ? show.image.medium : ""}
           summary={show.summary}
         />
-        // <ShowCard
-        //   key={show.id}
-        //   id={show.id}
-        //   name={show.name}
-        //   image={show.image ? show.image.medium : IMAGE_NOT_FOUND}
-        //   summary={show.summary}
-        // />
       ))}
     </div>
   );
