@@ -8,7 +8,7 @@ const LINKS = [
 
 const Navs = () => {
   return (
-    <div>
+    <nav>
       <ul>
         {LINKS.map((link) => (
           <li key={link.to}>
@@ -16,7 +16,7 @@ const Navs = () => {
           </li>
         ))}
       </ul>
-    </div>
+    </nav>
   );
 };
 

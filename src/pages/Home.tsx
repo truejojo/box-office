@@ -117,6 +117,18 @@ const Home = () => {
     setSearchOption(event.target.value);
   };
 
+  const renderResults = () => (
+    <>
+      {results.length === 0 ? (
+        <div>Sorry, no response!!!</div>
+      ) : isShowsSearch ? (
+        <ShowGrid data={results as IShow[]} />
+      ) : (
+        <ActorGrid data={results as IPerson[]} />
+      )}
+    </>
+  );
+
   return (
     <MainPageLayout>
       <input
@@ -128,42 +140,30 @@ const Home = () => {
       />
 
       <div>
-        <label htmlFor="shows-search">
-          Shows
-          <input
-            id="shows-search"
-            type="radio"
-            value="shows"
-            checked={isShowsSearch}
-            onChange={onRadioChange}
-          />
-        </label>
+        <label htmlFor="shows-search">Shows</label>
+        <input
+          id="shows-search"
+          type="radio"
+          value="shows"
+          checked={isShowsSearch}
+          onChange={onRadioChange}
+        />
 
-        <label htmlFor="actors-search">
-          Actors
-          <input
-            id="actors-search"
-            type="radio"
-            value="people"
-            checked={!isShowsSearch}
-            onChange={onRadioChange}
-          />
-        </label>
+        <label htmlFor="actors-search">Actors</label>
+        <input
+          id="actors-search"
+          type="radio"
+          value="people"
+          checked={!isShowsSearch}
+          onChange={onRadioChange}
+        />
       </div>
 
       <button type="button" onClick={onSearch}>
         Search...
       </button>
 
-      {results.length === 0 && <div>Sorry, no response!!!</div>}
-
-      {results.length > 0 && isShowsSearch && (
-        <ShowGrid data={results as IShow[]} />
-      )}
-
-      {results.length > 0 && !isShowsSearch && (
-        <ActorGrid data={results as IPerson[]} />
-      )}
+      {renderResults()}
     </MainPageLayout>
   );
 };

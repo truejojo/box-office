@@ -4,12 +4,12 @@ export const FlexGrid = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  gap: 3rem 2rem
 `;
 
 export const SearchCard = styled.div`
   width: 300px;
   height: 100%;
-  margin: 0 15px 40px;
 
   .img-wrapper {
     width: 100%;
