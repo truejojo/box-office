@@ -5,6 +5,7 @@ import Details from "../components/show/Details";
 import Seasons from "../components/show/Seasons";
 import Cast from "../components/show/Cast";
 import { apiGet } from "../misc/config";
+import { ShowPageWrapper, InfoBlock } from "./Show.styled";
 
 export interface IEmbeddedSeasonsProps {
   id: number;
@@ -128,7 +129,7 @@ const Show = () => {
   }
 
   return (
-    <div>
+    <ShowPageWrapper>
       {show && (
         <ShowMainData
           image={show.image}
@@ -139,7 +140,7 @@ const Show = () => {
         />
       )}
 
-      <div>
+      <InfoBlock>
         <h2>Details</h2>
         {show && (
           <Details
@@ -148,18 +149,18 @@ const Show = () => {
             premiered={show.premiered}
           />
         )}
-      </div>
+      </InfoBlock>
 
-      <div>
+      <InfoBlock>
         <h2>Seasons</h2>
         {show && <Seasons seasons={show._embedded.seasons} />}
-      </div>
+      </InfoBlock>
 
-      <div>
+      <InfoBlock>
         <h2>Cast</h2>
         {show && <Cast cast={show._embedded.cast} />}
-      </div>
-    </div>
+      </InfoBlock>
+    </ShowPageWrapper>
   );
 };
 
