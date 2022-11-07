@@ -1,8 +1,52 @@
 import { Reducer, useEffect, useReducer } from "react";
 import { useParams } from "react-router-dom";
+import ShowMainData from "../components/show/ShowMainData";
+import Details from "../components/show/Details";
+import Seasons from "../components/show/Seasons";
+import Cast from "../components/show/Cast";
 import { apiGet } from "../misc/config";
 
-interface IShowProps {}
+export interface IEmbeddedSeasonsProps {
+  id: number;
+  number: number;
+  episodeOrder: number;
+  premiereDate: string;
+  endDate: string;
+}
+
+export interface IEmbeddedCastProps {
+  person: {
+    name: string;
+    image: {
+      medium: string;
+    };
+  };
+  character: {
+    name: string;
+  };
+  voice: string;
+}
+interface IEmbeddedProps {
+  seasons: IEmbeddedSeasonsProps[];
+  cast: IEmbeddedCastProps[];
+}
+interface IShowProps {
+  image: {
+    original: string;
+  };
+  name: string;
+  rating: {
+    average: number;
+  };
+  summary: string;
+  genres: string[];
+  status: string;
+  network: {
+    name: string;
+  };
+  premiered: string;
+  _embedded: IEmbeddedProps;
+}
 
 enum ACTIONS_KIND {
   FETCH_SUCCESSS,
@@ -83,7 +127,40 @@ const Show = () => {
     return <div>Error occured: {error}</div>;
   }
 
-  return <div>Show: </div>;
+  return (
+    <div>
+      {show && (
+        <ShowMainData
+          image={show.image}
+          name={show.name}
+          rating={show.rating}
+          summary={show.summary}
+          tags={show.genres}
+        />
+      )}
+
+      <div>
+        <h2>Details</h2>
+        {show && (
+          <Details
+            status={show.status}
+            network={show.network}
+            premiered={show.premiered}
+          />
+        )}
+      </div>
+
+      <div>
+        <h2>Seasons</h2>
+        {show && <Seasons seasons={show._embedded.seasons} />}
+      </div>
+
+      <div>
+        <h2>Cast</h2>
+        {show && <Cast cast={show._embedded.cast} />}
+      </div>
+    </div>
+  );
 };
 
 export default Show;
