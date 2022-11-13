@@ -36,14 +36,14 @@ export const SearchCard = styled.div`
 `;
 
 interface IStarProps {
-  isActive?: boolean;
+  isActive: boolean;
 }
 
 export const Star = styled.div<IStarProps>`
   display: inline-block;
   width: 18px;
   height: 18px;
-  background-color: ${(props) => (props.isActive ? "#ffc806" : "#ddd")};
+  background-color: ${({ isActive }) => (isActive ? "#ffc806" : "#ddd")};
   clip-path: polygon(
     50% 0%,
     61% 35%,

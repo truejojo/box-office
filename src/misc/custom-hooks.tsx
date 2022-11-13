@@ -17,7 +17,6 @@ export type ACTIONS =
 
 const initialState: number[] = [];
 
-// const showReducer = (prevState: number[], action: ACTIONS) => {
 const showReducer = (prevState: typeof initialState = [], action: ACTIONS) => {
   switch (action.type) {
     case ActionTypes.ADD: {
@@ -31,13 +30,9 @@ const showReducer = (prevState: typeof initialState = [], action: ACTIONS) => {
   }
 };
 
-const userPersistedReducer = (
-  reducer: (prevState: number[], action: ACTIONS) => number[],
-  initialState: number[],
-  key: string
-) => {
+const userPersistedReducer = (key: string) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [state, dispatch] = useReducer(reducer, initialState, (initial) => {
+  const [state, dispatch] = useReducer(showReducer, initialState, (initial) => {
     const persisted = localStorage.getItem(key);
 
     return persisted ? JSON.parse(persisted) : initial;
@@ -52,6 +47,5 @@ const userPersistedReducer = (
 };
 
 export const useShows = (key: string = "shows") => {
-  return userPersistedReducer(showReducer, initialState, key);
-  // return userPersistedReducer(key);
+  return userPersistedReducer(key);
 };

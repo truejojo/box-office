@@ -18,13 +18,10 @@ const ShowGrid = ({ data }: IShowGridProps) => {
       {data.map(({ show }) => {
         const isStarred = state.includes(show.id);
 
-        const onStarClick = () => {
-          if (isStarred) {
-            dispatch({ type: ActionTypes.REMOVE, showId: show.id });
-          } else {
-            dispatch({ type: ActionTypes.ADD, showId: show.id });
-          }
-        };
+        const onStarClick = () =>
+          isStarred
+            ? dispatch({ type: ActionTypes.REMOVE, showId: show.id })
+            : dispatch({ type: ActionTypes.ADD, showId: show.id });
 
         return (
           <ShowCard
