@@ -1,5 +1,6 @@
 import { IShow } from "../../pages/Home";
 import ShowCard from "./ShowCard";
+import { useShows, ActionTypes } from "../../misc/custom-hooks";
 
 import { FlexGrid } from "../styled";
 
@@ -10,17 +11,33 @@ interface IShowGridProps {
 }
 
 const ShowGrid = ({ data }: IShowGridProps) => {
+  const { state, dispatch } = useShows();
+
   return (
     <FlexGrid>
-      {data.map(({ show }) => (
-        <ShowCard
-          key={show.id}
-          id={show.id}
-          name={show.name}
-          image={show.image ? show.image.medium : ""}
-          summary={show.summary}
-        />
-      ))}
+      {data.map(({ show }) => {
+        const isStarred = state.includes(show.id);
+
+        const onStarClick = () => {
+          if (isStarred) {
+            dispatch({ type: ActionTypes.REMOVE, showId: show.id });
+          } else {
+            dispatch({ type: ActionTypes.ADD, showId: show.id });
+          }
+        };
+
+        return (
+          <ShowCard
+            key={show.id}
+            id={show.id}
+            name={show.name}
+            image={show.image ? show.image.medium : ""}
+            summary={show.summary}
+            onStarClick={onStarClick}
+            isStarred={isStarred}
+          />
+        );
+      })}
     </FlexGrid>
   );
 };

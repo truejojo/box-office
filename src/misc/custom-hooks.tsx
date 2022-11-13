@@ -1,11 +1,11 @@
 import { useReducer, useEffect } from "react";
 
-enum ActionTypes {
+export enum ActionTypes {
   ADD,
   REMOVE,
 }
 
-type ACTIONS =
+export type ACTIONS =
   | {
       type: ActionTypes.ADD;
       showId: number;
@@ -37,7 +37,7 @@ const userPersistedReducer = (
   key: string
 ) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [state, dispatch] = useReducer(showReducer, initialState, (initial) => {
+  const [state, dispatch] = useReducer(reducer, initialState, (initial) => {
     const persisted = localStorage.getItem(key);
 
     return persisted ? JSON.parse(persisted) : initial;
@@ -48,7 +48,7 @@ const userPersistedReducer = (
     localStorage.setItem(key, JSON.stringify(state));
   }, [state, key]);
 
-  return [state, dispatch];
+  return { state, dispatch };
 };
 
 export const useShows = (key: string = "shows") => {

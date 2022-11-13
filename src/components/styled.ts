@@ -4,7 +4,7 @@ export const FlexGrid = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 3rem 2rem
+  gap: 3rem 2rem;
 `;
 
 export const SearchCard = styled.div`
@@ -35,19 +35,23 @@ export const SearchCard = styled.div`
   }
 `;
 
-export const Star = styled.div`
+interface IStarProps {
+  isActive?: boolean;
+}
+
+export const Star = styled.div<IStarProps>`
   display: inline-block;
   width: 18px;
   height: 18px;
-  background-color: #ffc806;
+  background-color: ${(props) => (props.isActive ? "#ffc806" : "#ddd")};
   clip-path: polygon(
     50% 0%,
     61% 35%,
-    98% 35%,
     68% 57%,
     79% 91%,
     50% 70%,
     21% 91%,
+    98% 35%,
     32% 57%,
     2% 35%,
     39% 35%

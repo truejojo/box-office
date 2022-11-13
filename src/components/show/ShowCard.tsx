@@ -1,22 +1,31 @@
-import { Link } from 'react-router-dom';
-import { StyledShowCard } from './ShowCard.styled';
+import { Link } from "react-router-dom";
+import { Star } from "../styled";
+import { StyledShowCard } from "./ShowCard.styled";
 
 interface IShowCardProps {
   id: number;
   image: string;
-  name:string;
+  name: string;
   summary: string;
+  onStarClick: () => void;
+  isStarred: boolean;
 }
 
-const ShowCard = ({ id, image, name, summary }: IShowCardProps) => {
-  
+const ShowCard = ({
+  id,
+  image,
+  name,
+  summary,
+  onStarClick,
+  isStarred,
+}: IShowCardProps) => {
   const summaryAsText = summary
-    ? `${summary.split(' ').slice(0, 10).join(' ').replace(/<.+?>/g, "")}...`
-    : 'No description';
+    ? `${summary.split(" ").slice(0, 10).join(" ").replace(/<.+?>/g, "")}...`
+    : "No description";
 
   return (
     <StyledShowCard>
-      <div className='img-wrapper'>
+      <div className="img-wrapper">
         <img src={image} alt="show" />
       </div>
 
@@ -24,13 +33,14 @@ const ShowCard = ({ id, image, name, summary }: IShowCardProps) => {
 
       <p>{summaryAsText}</p>
 
-      <div className='btns'>
+      <div className="btns">
         <Link to={`/show/${id}`}>Read more</Link>
-        <button type="button">Star me</button>
+        <button type="button" onClick={onStarClick}>
+          <Star isActive={isStarred}/>
+        </button>
       </div>
     </StyledShowCard>
   );
 };
 
-
-export default ShowCard
+export default ShowCard;
